@@ -22,24 +22,29 @@ if(isset($_SESSION['message'])): ?>
 <?php endif ?>
 <div class="container">
 <?php
-    $mysqli = new mysqli('localhost','root','','crud') or die(mysqli_error($mysqli));
-    $result = $mysqli->query("SELECT * FROM data");
+    $mysqli = new mysqli('localhost','root','','football') or die(mysqli_error($mysqli));
+    $result = $mysqli->query("SELECT * FROM club");
     //pre_r($result);
     ?>
 <div class="row justify-content-center">
     <table class ="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Location</th>
-                <th colspan="2">Action</th>
+                <th>id</th>
+                <th>Team Name</th>
+                <th>Team Trainer Name</th>
+                <th>Number of Players</th>
+                <th colspan="3">Action</th>
             </tr>
         </thead>
         <?php
             while($row = $result->fetch_assoc()): ?>
         <tr>
+            <td> <?php echo $row['id'];?> </td>
             <td> <?php echo $row['name'];?> </td>
-            <td> <?php echo $row['location'];?> </td>
+            <td> <?php echo $row['trainer'];?> </td>
+            <td> <?php echo $row['players'];?> </td>
+
             <td>
                 <a href="test.php?edit=<?php echo $row['id']; ?>"
                    class ="btn btn-info">Edit</a>
@@ -62,13 +67,17 @@ function pre_r($array){
 <form action="process.php" method="POST">
     <input type="hidden" name ="id" value="<?php echo $id; ?>"
     <div class="form-group">
-    <label>Name</label>
-    <input type="text" name="name" class="form-control" value="<?php echo $name; ?>" placeholder="Enter your name">
+    <label>Team Name</label>
+    <input type="text" name="name" class="form-control" value="<?php echo $name; ?>" placeholder="Enter team name">
     </div>
     <div class="row justify-content-center">
-    <label>Location</label>
-        <input type="text" name="location" class="form-control" value="<?php echo $location; ?>" placeholder="Enter your location">
+    <label>Team Trainer Name</label>
+        <input type="text" name="trainer" class="form-control" value="<?php echo $trainer; ?>" placeholder="Enter trainer name">
      </div>
+    <div class="row justify-content-center">
+        <label>Number of Players</label>
+        <input type="text" name="players" class="form-control" value="<?php echo $players; ?>" placeholder="Enter number of players">
+    </div>
     <div class="row justify-content-center">
         <?php
             if($update == true):

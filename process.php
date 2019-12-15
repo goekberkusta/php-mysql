@@ -3,17 +3,21 @@
 session_start();
 
 $name ='';
-$location='';
+$trainer='';
+$players='';
 $update = false;
-$id =0;
-$mysqli = new mysqli('localhost','root','','crud') or die(mysqli_error($mysqli));
+$id=0;
+$mysqli = new mysqli('localhost','root','','football') or die(mysqli_error($mysqli));
 
 if(isset($_POST['save'])){
 
-    $name = $_POST['name'];
-    $location = $_POST['location'];
+    $id = $_POST['save'];
 
-    $mysqli->query("INSERT INTO data (name,location) VALUES('$name','$location')") or
+    $name = $_POST['name'];
+    $trainer = $_POST['trainer'];
+    $players = $_POST['players'];
+
+    $mysqli->query("INSERT INTO club(id,name,trainer,players) VALUES('$id','$name','$trainer','$players')") or
     die($mysqli -> error);
 
     $_SESSION['message'] = "Record has been saved";
@@ -24,7 +28,7 @@ if(isset($_POST['save'])){
 
 if(isset($_GET['delete'])){
     $id = $_GET['delete'];
-    $mysqli->query("DELETE FROM data WHERE id=$id") or die(mysqli_error($mysqli));
+    $mysqli->query("DELETE FROM club WHERE id=$id") or die(mysqli_error($mysqli));
 
     $_SESSION['message'] = "Record has been deleted";
     $_SESSION['msg_type'] = "danger";
@@ -36,20 +40,22 @@ if(isset($_GET['delete'])){
 if(isset($_GET['edit'])){
     $id= $_GET['edit'];
     $update = true;
-    $result = $mysqli->query("SELECT * FROM data WHERE id = $id") or die($mysqli->error);
+    $result = $mysqli->query("SELECT * FROM club WHERE id = $id") or die($mysqli->error);
     if(@count($result)==1){
         $row = $result->fetch_array();
         $name = $row['name'];
-        $location = $row['location'];
+        $trainer = $row['trainer'];
+        $players = $row['players'];
     }
 }
 
 if(isset($_POST['update'])){
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $location = $_POST['location'];
+    $trainer = $_POST['trainer'];
+    $players = $_POST['players'];
 
-    $mysqli ->query("UPDATE data SET name='$name', location='$location' WHERE id=$id") or die($mysqli->error);
+    $mysqli ->query("UPDATE club SET name='$name', trainer='$trainer', players='$players' WHERE id=$id") or die($mysqli->error);
 
     $_SESSION['message'] = "Record has been updated!";
     $_SESSION['msg_type'] = "warning";
